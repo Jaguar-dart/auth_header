@@ -23,10 +23,38 @@ class AuthHeaderItem {
 
   /// Finds Authorisation header item in the given [header] by given [sceme]
   factory AuthHeaderItem.fromHeaderBySchema(String header, String sceme) =>
-      headerToItems(header)[sceme];
+      AuthHeaders.headerStrToItems(header)[sceme];
+}
+
+class AuthHeaders {
+  final Map<String, AuthHeaderItem> items = {};
+
+  AuthHeaders();
+
+  AuthHeaders.fromHeaderStr(String header) {
+    items.addAll(headerStrToItems(header));
+  }
+
+  void addItem(AuthHeaderItem item, {bool omitIfPresent: true}) {
+    if (omitIfPresent && items.containsKey(item.authScheme)) {
+      return;
+    }
+
+    items[item.authScheme] = item;
+  }
+
+  AuthHeaderItem removeItemByScheme(String scheme) {
+    return items.remove(scheme);
+  }
+
+  bool containsScheme(String scheme) => items.containsKey(scheme);
+
+  bool get isEmpty => items.isEmpty;
+
+  String toString() => items.values.map((h) => h.toString()).join(',');
 
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
-  static Map<String, AuthHeaderItem> headerToItems(String header) {
+  static Map<String, AuthHeaderItem> headerStrToItems(String header) {
     List<String> authHeaders = _splitAuthHeader(header);
 
     final map = <String, AuthHeaderItem>{};
@@ -45,31 +73,30 @@ class AuthHeaderItem {
   }
 
   /// Adds new authorisation item [newItem] to the authorisation header [header]
-  static String addItemToAuthHeader(String header, AuthHeaderItem newItem,
-      {bool omitIfAuthSchemeAlreadyInHeader: true}) {
-    final items = AuthHeaderItem.headerToItems(header);
+  static String addItemToHeaderStr(String header, AuthHeaderItem newItem,
+      {bool omitIfPresent: true}) {
+    AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
 
-    if (omitIfAuthSchemeAlreadyInHeader &&
-        items.containsKey(newItem.authScheme)) {
+    if (omitIfPresent && auth.containsScheme(newItem.authScheme)) {
       return header;
     } else {
-      items[newItem.authScheme] = newItem;
+      auth.addItem(newItem, omitIfPresent: omitIfPresent);
 
-      return items.values.map((h) => h.toString()).join(',');
+      return auth.toString();
     }
   }
 
   /// Removed the requested scheme from the header
-  static String removeSchemeFromHeader(String header, String scheme) {
-    final items = AuthHeaderItem.headerToItems(header);
+  static String removeSchemeFromHeaderStr(String header, String scheme) {
+    AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
 
-    if (items.isEmpty || !items.containsKey(scheme)) {
+    if (auth.isEmpty || !auth.containsScheme(scheme)) {
       return header;
     }
 
-    items.remove(scheme);
+    auth.removeItemByScheme(scheme);
 
-    return items.values.map((h) => h.toString()).join(',');
+    return auth.toString();
   }
 }
 
