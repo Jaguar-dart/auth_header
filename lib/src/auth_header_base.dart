@@ -53,6 +53,10 @@ class AuthHeaders {
 
   String toString() => items.values.map((h) => h.toString()).join(',');
 
+  /// Value returned by this function shall be added to request headers
+  Map<String, String> toAuthorizationHeader() =>
+      {HttpHeaders.AUTHORIZATION: toString()};
+
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
   static Map<String, AuthHeaderItem> headerStrToItems(String header) {
     List<String> authHeaders = _splitAuthHeader(header);

@@ -14,8 +14,8 @@ main() {
 
   String header = headers.first;
 
-  Map<String, AuthHeaderItem> authHeader = new AuthHeaders.fromHeaderStr(header);
-  print(authHeader.toString());
+  AuthHeaders authHeader = new AuthHeaders.fromHeaderStr(header);
+  print(authHeader);
 
   AuthHeaderItem items = new AuthHeaderItem('some-scheme', 'teja');
   String headerManipulated = AuthHeaders.addItemToHeaderStr(header, items);
