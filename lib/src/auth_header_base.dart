@@ -23,7 +23,7 @@ class AuthHeaderItem {
 
   /// Finds Authorisation header item in the given [header] by given [sceme]
   factory AuthHeaderItem.fromHeaderBySchema(String header, String sceme) =>
-      AuthHeaders.headerStrToItems(header)[sceme];
+      AuthHeaders.headerStrToItems(header ?? '')[sceme];
 }
 
 class AuthHeaders {
@@ -59,6 +59,7 @@ class AuthHeaders {
 
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
   static Map<String, AuthHeaderItem> headerStrToItems(String header) {
+    if (header is! String || header.isEmpty) return {};
     List<String> authHeaders = _splitAuthHeader(header);
 
     final map = <String, AuthHeaderItem>{};
@@ -79,6 +80,7 @@ class AuthHeaders {
   /// Adds new authorisation item [newItem] to the authorisation header [header]
   static String addItemToHeaderStr(String header, AuthHeaderItem newItem,
       {bool omitIfPresent: true}) {
+    if (header is! String || header.isEmpty) return '';
     AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
 
     if (omitIfPresent && auth.containsScheme(newItem.authScheme)) {
@@ -92,6 +94,7 @@ class AuthHeaders {
 
   /// Removed the requested scheme from the header
   static String removeSchemeFromHeaderStr(String header, String scheme) {
+    if (header is! String || header.isEmpty) return '';
     AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
 
     if (auth.isEmpty || !auth.containsScheme(scheme)) {
