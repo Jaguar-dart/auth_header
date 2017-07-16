@@ -65,7 +65,7 @@ class AuthHeaders {
     final map = <String, AuthHeaderItem>{};
 
     authHeaders.forEach((String headerStr) {
-      final List<String> parts = header.split(' ');
+      final List<String> parts = headerStr.split(' ');
 
       if (parts.length != 2) {
         return;
