@@ -11,7 +11,7 @@ import 'dart:io';
 import 'package:auth_header/auth_header.dart';
 
 main() {
-  HttpRequest request;  //TODO get from the real request
+  HttpRequest request;  // TODO get from the real request
 
   List<String> headers = request.headers[HttpHeaders.AUTHORIZATION];
   if(headers is! List) {

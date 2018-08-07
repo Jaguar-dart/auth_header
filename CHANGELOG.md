@@ -1,9 +1,5 @@
 # Changelog
 
-## 0.0.1
+## 2.1.1
 
-- Utilities to parse and manipulate Authentication header
-
-## 0.0.2
-
-- Added `toAuthorizationHeader` in `AuthHeaders`
++ Fixed bug in `addItemToHeaderStr` when `header` is empty

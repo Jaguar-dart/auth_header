@@ -19,7 +19,7 @@ class AuthHeaderItem {
 
   /// Value returned by this function shall be added to request headers
   Map<String, String> toAuthorizationHeader() =>
-      {HttpHeaders.AUTHORIZATION: toString()};
+      {HttpHeaders.authorizationHeader: toString()};
 
   /// Finds Authorisation header item in the given [header] by given [sceme]
   factory AuthHeaderItem.fromHeaderBySchema(String header, String sceme) =>
@@ -55,7 +55,7 @@ class AuthHeaders {
 
   /// Value returned by this function shall be added to request headers
   Map<String, String> toAuthorizationHeader() =>
-      {HttpHeaders.AUTHORIZATION: toString()};
+      {HttpHeaders.authorizationHeader: toString()};
 
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
   static Map<String, AuthHeaderItem> headerStrToItems(String header) {
@@ -80,14 +80,13 @@ class AuthHeaders {
   /// Adds new authorisation item [newItem] to the authorisation header [header]
   static String addItemToHeaderStr(String header, AuthHeaderItem newItem,
       {bool omitIfPresent: true}) {
-    if (header is! String || header.isEmpty) return '';
-    AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
+    if (header is! String) header = '';
+    var auth = AuthHeaders.fromHeaderStr(header);
 
     if (omitIfPresent && auth.containsScheme(newItem.authScheme)) {
       return header;
     } else {
       auth.addItem(newItem, omitIfPresent: omitIfPresent);
-
       return auth.toString();
     }
   }
