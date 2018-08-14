@@ -13,6 +13,7 @@ main() {
   String headerManipulated = AuthHeaders.addItemToHeaderStr(header, items);
   print(headerManipulated);
 
-  headerManipulated = AuthHeaders.removeSchemeFromHeaderStr(header, items.authScheme);
+  headerManipulated =
+      AuthHeaders.removeSchemeFromHeaderStr(header, items.authScheme);
   print(headerManipulated);
 }
