@@ -1,6 +1,6 @@
 name: auth_header
 description: Utility library to parse and manipulate HTTP Authorisation header
-version: 2.1.2
+version: 2.1.4
 author: Ravi Teja Gudapati <tejainece@gmail.com>
 homepage: http://jaguar-dart.github.io
 

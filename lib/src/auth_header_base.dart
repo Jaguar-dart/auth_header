@@ -3,8 +3,6 @@
 
 library auth_header;
 
-import 'dart:io' show HttpHeaders;
-
 /// Represents an item in Authorisation header
 class AuthHeaderItem {
   /// Authorisation scheme
@@ -18,8 +16,7 @@ class AuthHeaderItem {
   String toString() => '${authScheme} ${credentials}';
 
   /// Value returned by this function shall be added to request headers
-  Map<String, String> toAuthorizationHeader() =>
-      {HttpHeaders.authorizationHeader: toString()};
+  Map<String, String> toAuthorizationHeader() => {"authorization": toString()};
 
   /// Finds Authorisation header item in the given [header] by given [sceme]
   factory AuthHeaderItem.fromHeaderBySchema(String header, String sceme) =>
@@ -54,8 +51,7 @@ class AuthHeaders {
   String toString() => items.values.map((h) => h.toString()).join(',');
 
   /// Value returned by this function shall be added to request headers
-  Map<String, String> toAuthorizationHeader() =>
-      {HttpHeaders.authorizationHeader: toString()};
+  Map<String, String> toAuthorizationHeader() => {"authorization": toString()};
 
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
   static Map<String, AuthHeaderItem> headerStrToItems(String header) {
