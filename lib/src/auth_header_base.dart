@@ -18,9 +18,9 @@ class AuthHeaderItem {
   /// Value returned by this function shall be added to request headers
   Map<String, String> toAuthorizationHeader() => {"authorization": toString()};
 
-  /// Finds Authorisation header item in the given [header] by given [sceme]
-  factory AuthHeaderItem.fromHeaderBySchema(String header, String sceme) =>
-      AuthHeaders.headerStrToItems(header ?? '')[sceme];
+  /// Finds Authorisation header item in the given [header] by given [scheme]
+  static AuthHeaderItem? fromHeaderBySchema(String? header, String scheme) =>
+      AuthHeaders.headerStrToItems(header ?? '')[scheme];
 }
 
 class AuthHeaders {
@@ -40,7 +40,7 @@ class AuthHeaders {
     items[item.authScheme] = item;
   }
 
-  AuthHeaderItem removeItemByScheme(String scheme) {
+  AuthHeaderItem? removeItemByScheme(String scheme) {
     return items.remove(scheme);
   }
 
