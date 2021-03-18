@@ -20,16 +20,18 @@ class AuthHeaderItem {
 
   /// Finds Authorisation header item in the given [header] by given [scheme]
   static AuthHeaderItem? fromHeaderBySchema(String? header, String scheme) =>
-      AuthHeaders.headerStrToItems(header ?? '')[scheme];
+      AuthHeaders.headerStrToItems(header)[scheme];
 }
 
 class AuthHeaders {
-  final Map<String, AuthHeaderItem> items = {};
+  final Map<String, AuthHeaderItem> items;
 
-  AuthHeaders();
+  AuthHeaders.from(this.items);
 
-  AuthHeaders.fromHeaderStr(String header) {
-    items.addAll(headerStrToItems(header));
+  AuthHeaders() : items = {};
+
+  factory AuthHeaders.fromHeaderStr(String? header) {
+    return AuthHeaders.from(headerStrToItems(header));
   }
 
   void addItem(AuthHeaderItem item, {bool omitIfPresent: true}) {
@@ -54,8 +56,10 @@ class AuthHeaders {
   Map<String, String> toAuthorizationHeader() => {"authorization": toString()};
 
   /// Creates and returns a Map of scheme to [AuthHeaderItem] from given [header]
-  static Map<String, AuthHeaderItem> headerStrToItems(String header) {
-    if (header is! String || header.isEmpty) return {};
+  static Map<String, AuthHeaderItem> headerStrToItems(String? header) {
+    if (header == null || header.isEmpty) {
+      return {};
+    }
     List<String> authHeaders = _splitAuthHeader(header);
 
     final map = <String, AuthHeaderItem>{};
@@ -74,9 +78,11 @@ class AuthHeaders {
   }
 
   /// Adds new authorisation item [newItem] to the authorisation header [header]
-  static String addItemToHeaderStr(String header, AuthHeaderItem newItem,
+  static String addItemToHeaderStr(String? header, AuthHeaderItem newItem,
       {bool omitIfPresent: true}) {
-    if (header is! String) header = '';
+    if (header == null) {
+      header = '';
+    }
     var auth = AuthHeaders.fromHeaderStr(header);
 
     if (omitIfPresent && auth.containsScheme(newItem.authScheme)) {
@@ -88,9 +94,11 @@ class AuthHeaders {
   }
 
   /// Removed the requested scheme from the header
-  static String removeSchemeFromHeaderStr(String header, String scheme) {
-    if (header is! String || header.isEmpty) return '';
-    AuthHeaders auth = new AuthHeaders.fromHeaderStr(header);
+  static String removeSchemeFromHeaderStr(String? header, String scheme) {
+    if (header == null || header.isEmpty) {
+      return '';
+    }
+    AuthHeaders auth = AuthHeaders.fromHeaderStr(header);
 
     if (auth.isEmpty || !auth.containsScheme(scheme)) {
       return header;

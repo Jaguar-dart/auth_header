@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1
+
++ Migrated to null safety
+
 ## 3.0.0
 
 + Migrated to null safety
